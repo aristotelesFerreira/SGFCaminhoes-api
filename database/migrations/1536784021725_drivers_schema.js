@@ -6,6 +6,7 @@ class DriversSchema extends Schema {
   up () {
     this.create('drivers', (table) => {
       table.increments()
+      table.string('uuid').notNullable().unique()
       table.string('name').notNullable()
       table.string('cpf_number').unique().notNullable()
       table.string('drivers_license').notNullable()
