@@ -35,3 +35,7 @@ Route.resource('carts', 'CartController')
 Route.resource('vehicles', 'VehicleController')
   .apiOnly()
   .middleware('auth')
+
+Route.resource('itineraries', 'ItineraryController')
+  .apiOnly()
+  .middleware('auth')

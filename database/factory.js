@@ -11,12 +11,20 @@
 |
 */
 
-// const Factory = use('Factory')
+const Factory = use('Factory')
+const Hash = use('Hash')
 
-/**
-  Factory.blueprint('App/Models/User', (faker) => {
+//const User = use('App/Models/User')
+
+
+  Factory.blueprint('App/Models/User', async (faker) => {
     return {
-      username: faker.username()
+      email: 'teste@teste.com',
+      password: '123456'
     }
+    const user = await Factory
+    .model('App/Models/User')
+    .create()
   })
-*/
+
+
