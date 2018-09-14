@@ -27,3 +27,11 @@ Route.get('users/:id', 'UserController.show').middleware('auth')
 Route.resource('drivers', 'DriverController')
   .apiOnly()
   .middleware('auth')
+
+Route.resource('carts', 'CartController')
+  .apiOnly()
+  .middleware('auth')
+
+Route.resource('vehicles', 'VehicleController')
+  .apiOnly()
+  .middleware('auth')
