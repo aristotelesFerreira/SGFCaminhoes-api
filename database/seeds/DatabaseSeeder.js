@@ -2,28 +2,23 @@
 
 /*
 |--------------------------------------------------------------------------
-| UserSeeder
+| DatabaseSeeder
 |--------------------------------------------------------------------------
 |
 | Make use of the Factory instance to seed database with dummy data or
 | make use of Lucid models directly.
 |
 */
-
 const Factory = use('Factory')
-const Database = use('Database')
-const User = use('App/Models/User')
 
-class UserSeeder {
+class DatabaseSeeder {
   async run () {
-    await User.create({
-      email: 'admin@admin.com',
-      password: '123456',
-      acess: 'admin',
-      status: 'active'
-    })
-
+    await Factory.model('App/Models/Driver').create()
+    await Factory.model('App/Models/Vehicle').create()
+    await Factory.model('App/Models/Cart').create()
+    await Factory.model('App/Models/Itinerary').create()
   }
+ 
 }
 
-module.exports = UserSeeder
+module.exports = DatabaseSeeder
