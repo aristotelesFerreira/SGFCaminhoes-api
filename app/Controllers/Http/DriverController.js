@@ -9,13 +9,6 @@ class DriverController {
 
         return drivers
     }
-      
-    async show ({ params }) {
-      const driver = await Driver.findOrFail(params.id)
-
-      return driver
-
-    }
   
     async store ({ request }) {
       const data = request.only([
@@ -24,6 +17,13 @@ class DriverController {
       ])
 
       const driver = await Driver.create(data)
+
+      return driver
+
+    }
+
+    async show ({ params }) {
+      const driver = await Driver.query().where('uuid', params.id)
 
       return driver
 

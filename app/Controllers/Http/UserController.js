@@ -9,15 +9,17 @@ class UserController {
 
         return users
     }
-    async show ({ params }) {
-        const user = await User.findOrFail(params.id)
-
-        return user
-    }
-    async create ({ request }) {
+    
+    async store ({ request }) {
         const data = request.only(['username', 'email', 'password'])
 
         const user = await User.create(data)
+
+        return user
+    }
+
+    async show ({ params }) {
+        const user = await User.query().where('uuid', params.id)
 
         return user
     }

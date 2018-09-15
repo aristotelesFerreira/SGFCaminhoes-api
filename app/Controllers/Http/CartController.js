@@ -23,7 +23,7 @@ class CartController {
 
  
   async show ({ params }) {
-    const cart = await Cart.findOrFail(params.id)
+    const cart = await Cart.query().where('uuid', params.id)
 
     return cart
   }

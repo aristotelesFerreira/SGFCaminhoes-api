@@ -26,7 +26,7 @@ class ItineraryController {
   
   async show ({ params }) {
 
-    const itinerary = await Itinerary.findOrFail(params.id)
+    const itinerary = await Itinerary.query().where('uuid', params.id)
 
     return itinerary
   }

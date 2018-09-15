@@ -23,7 +23,7 @@ class VehicleController {
 
  
   async show ({ params }) {
-    const vehicle = await Vehicle.findOrFail(params.id)//alterar para uuid
+    const vehicle = await Vehicle.query().where('uuid', params.id)
 
     return vehicle
   }

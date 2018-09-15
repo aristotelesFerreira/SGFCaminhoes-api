@@ -16,7 +16,7 @@
 const Route = use('Route')
 // Rotas sem autenticação
 
-Route.post('/users', 'UserController.create')
+Route.post('/users', 'UserController.store')
 Route.post('/auth', 'AuthenticationController.create')
 
 // Rotas com autenticação
