@@ -7,7 +7,7 @@ class ItinerariesSchema extends Schema {
     this.create('itineraries', (table) => {
       table.increments()
       table.string('uuid').notNullable().unique()
-      table.string('route_name').notNullable()
+      table.string('route_name').notNullable().unique()
       table.string('initial_point').notNullable()
       table.string('end_point').notNullable()
       table.double('distance').notNullable()

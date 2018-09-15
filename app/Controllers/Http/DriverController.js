@@ -29,7 +29,6 @@ class DriverController {
 
     }
 
-  
     async update ({ params, request, response }) {
     }
 
