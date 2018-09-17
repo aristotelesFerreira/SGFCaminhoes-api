@@ -15,7 +15,8 @@ class DriversSchema extends Schema {
       table.double('salary')
       table.string('phone_1')
       table.string('phone_2')
-      table.enum('status',['active', 'inactive']).notNullable()
+      //table.enum('status',['active', 'inactive']).notNullable()
+      table.boolean('status').notNullable()
       table.timestamps()
     })
   }

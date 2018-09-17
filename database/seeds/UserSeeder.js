@@ -20,7 +20,7 @@ class UserSeeder {
       email: 'admin@admin.com',
       password: '123456',
       acess: 'admin',
-      status: 'active'
+      status: true
     })
 
   }

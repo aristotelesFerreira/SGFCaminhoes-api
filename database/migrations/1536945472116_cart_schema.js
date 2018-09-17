@@ -20,7 +20,7 @@ class CartSchema extends Schema {
       table.double('sale_value')
       table.date('purchase_date')
       table.string('observation')
-      table.enum('status',['active', 'inactive']).notNullable()
+      table.boolean('status').notNullable()
       table.timestamps()
     })
   }

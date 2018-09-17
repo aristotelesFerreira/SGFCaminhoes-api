@@ -30,6 +30,15 @@ class DriverController {
     }
 
     async update ({ params, request, response }) {
+      const driver = await Driver.query().where('uuid', params.id).firstOrFail()
+      
+      const data = request.all()
+    
+      driver.merge(data)
+
+      await driver.save()
+
+      return driver
     }
 
     async destroy ({ params, request, response }) {

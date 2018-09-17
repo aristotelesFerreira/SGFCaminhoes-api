@@ -17,7 +17,7 @@ class VehicleSchema extends Schema {
       table.double('purchase_price')
       table.double('sale_value')
       table.date('purchase_date')
-      table.enum('status', ['active', 'inactive']).notNullable()
+      table.boolean('status').notNullable()
       table.timestamps()
     })
   }

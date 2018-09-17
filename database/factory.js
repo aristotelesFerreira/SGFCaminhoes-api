@@ -34,7 +34,7 @@ const Hash = use('Hash')
       salary: '3500',
       phone_1: '62 981703778',
       phone_2: '(62) 9-84681533',
-      status: 'active'
+      status: true
     }
   })
   Factory.blueprint('App/Models/Vehicle', async (faker) => {
@@ -49,7 +49,7 @@ const Hash = use('Hash')
       purchase_price: '100000.00',
       sale_value: '80000.00',
       purchase_date: '2018-02-15',
-      status: 'active'
+      status: true
     }
   })
   Factory.blueprint('App/Models/Cart', async (faker) => {
@@ -67,7 +67,7 @@ const Hash = use('Hash')
       sale_value: '80000.00',
       purchase_date: '2018-02-15',
       observation: '',
-      status: 'active'
+      status: true
     }
   })
   Factory.blueprint('App/Models/Itinerary', async (faker) => {
@@ -77,7 +77,7 @@ const Hash = use('Hash')
       end_point: 'São Luis Montes Belos - GO',
       distance: '130',
       observation: 'Estrada perigosa',
-      status: 'active'
+      status: true
     }
   })
 

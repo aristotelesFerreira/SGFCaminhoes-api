@@ -12,7 +12,7 @@ class ItinerariesSchema extends Schema {
       table.string('end_point').notNullable()
       table.double('distance').notNullable()
       table.string('observation')
-      table.string('status').notNullable()
+      table.boolean('status').notNullable()
       table.timestamps()
     })
   }
