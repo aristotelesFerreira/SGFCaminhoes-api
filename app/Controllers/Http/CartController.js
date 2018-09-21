@@ -30,11 +30,17 @@ class CartController {
 
  
   async update ({ params, request, response }) {
+    const cart = await Cart.query().where('uuid', params.id).firstOrFail()
+
+    const data = request.all()
+
+    await cart.merge(data)
+
+    cart.save()
+
+    return cart
   }
 
-
-  async destroy ({ params, request, response }) {
-  }
 }
 
 module.exports = CartController
