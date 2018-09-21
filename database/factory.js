@@ -31,7 +31,7 @@ const Hash = use('Hash')
       drivers_license: 'ABCDE',
       admission_date: '2018-08-15',
       //resignation_date: '',
-      salary: '3500',
+      driversLicense_validate: '2018-09-20',
       phone_1: '62 981703778',
       phone_2: '(62) 9-84681533',
       status: true
@@ -66,7 +66,6 @@ const Hash = use('Hash')
       purchase_price: '100000.00',
       sale_value: '80000.00',
       purchase_date: '2018-02-15',
-      observation: '',
       status: true
     }
   })

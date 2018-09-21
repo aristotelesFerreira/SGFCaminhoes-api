@@ -12,7 +12,7 @@ class DriversSchema extends Schema {
       table.string('drivers_license').notNullable()
       table.date('admission_date')
       table.date('resignation_date')
-      table.double('salary')
+      table.date('driversLicense_validate')
       table.string('phone_1')
       table.string('phone_2')
       //table.enum('status',['active', 'inactive']).notNullable()

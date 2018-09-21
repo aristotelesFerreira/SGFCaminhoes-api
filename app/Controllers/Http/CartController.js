@@ -13,7 +13,7 @@ class CartController {
   async store ({ request }) {
     const data = request.only([
       'brand', 'model', 'description', 'type', 'km_current', 'year', 'capacity', 'plate', 'chassis_number',
-      'purchase_price', 'sale_value', 'purchase_date', 'observation', 'status'
+      'purchase_price', 'sale_value', 'purchase_date', 'status'
     ])
     
     const cart = await Cart.create(data)

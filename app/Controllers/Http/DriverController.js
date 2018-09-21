@@ -13,7 +13,7 @@ class DriverController {
     async store ({ request }) {
       const data = request.only([
         'name', 'cpf_number', 'drivers_license', 'admission_date', 
-        'resignation_date', 'salary', 'phone_1', 'phone_2' , 'status'
+        'resignation_date', 'driversLicense_validate', 'phone_1', 'phone_2' , 'status'
       ])
 
       const driver = await Driver.create(data)
@@ -39,9 +39,6 @@ class DriverController {
       await driver.save()
 
       return driver
-    }
-
-    async destroy ({ params, request, response }) {
     }
 }
 

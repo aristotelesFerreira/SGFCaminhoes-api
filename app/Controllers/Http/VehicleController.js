@@ -30,10 +30,16 @@ class VehicleController {
 
   
   async update ({ params, request, response }) {
-  }
+    const vehicle = await Vehicle.query().where('uuid', params.id).firstOrFail()
 
-  
-  async destroy ({ params, request, response }) {
+    const data = request.all()
+    
+    vehicle.merge(data)
+
+    await vehicle.save()
+
+    return vehicle
+
   }
 }
 
