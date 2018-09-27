@@ -33,6 +33,15 @@ class ItineraryController {
 
  
   async update ({ params, request, response }) {
+    const itinerary = await Itinerary.query().where('uuid', params.id).firstOrFail()
+      
+    const data = request.all()
+  
+    itinerary.merge(data)
+
+    await itinerary.save()
+
+    return itinerary
   }
 
 
