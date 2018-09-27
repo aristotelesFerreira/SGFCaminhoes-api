@@ -16,7 +16,7 @@ class DatabaseSeeder {
     await Factory.model('App/Models/Driver').create()
     await Factory.model('App/Models/Vehicle').create()
     await Factory.model('App/Models/Cart').create()
-    await Factory.model('App/Models/Itinerary').create()
+    //await Factory.model('App/Models/Itinerary').create()
   }
  
 }

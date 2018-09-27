@@ -15,7 +15,7 @@ class ItineraryController {
   async store ({ request }) {
 
     const data = request.only([
-      'route_name', 'initial_point', 'end_point', 'distance', 'observation', 'status'
+      'route_name', 'initial_point','lat_initial', 'lng_initial', 'end_point', 'lat_end', 'lng_end' , 'distance', 'observation', 'status'
     ])
 
     const itinerary = await Itinerary.create(data)
