@@ -39,3 +39,7 @@ Route.resource('vehicles', 'VehicleController')
 Route.resource('itineraries', 'ItineraryController')
   .apiOnly()
   .middleware('auth')
+
+Route.resource('travels', 'TravelController')
+  .apiOnly()
+  .middleware('auth')

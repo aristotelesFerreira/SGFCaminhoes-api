@@ -5,9 +5,10 @@ const Cart = use ('App/Models/Cart')
 class CartController {
  
   async index () {
-    const carts = Cart.all()
+    const cart = Cart.all()
+    //const cart = await Cart.query().where('status', true)
 
-    return carts
+    return cart
   }
 
   async store ({ request }) {
@@ -23,9 +24,10 @@ class CartController {
 
  
   async show ({ params }) {
-    const cart = await Cart.query().where('uuid', params.id)
+    const cart = await Cart.query().where('uuid', params.id)//.where('status', true)
 
     return cart
+    
   }
 
  

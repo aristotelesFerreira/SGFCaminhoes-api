@@ -7,6 +7,9 @@ class Driver extends Model {
         super.boot()
         this.addHook('beforeCreate', 'CommonHook.getUuid')
     }
+    travel() {
+        return this.belongsToMany('App/Models/Travel')
+    }
 }
 
 module.exports = Driver

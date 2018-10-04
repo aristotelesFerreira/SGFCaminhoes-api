@@ -24,16 +24,18 @@ class UserController {
         return user
     }
 
-    /*async destroy ({ params, auth, response }) {
-        const user = await User.findOrFail(params.id)
+    async update ({ params, request, response }) {
+        const user = await User.query().where('uuid', params.id).firstOrFail()
 
-        if(user.useR_id !== auth.user.id) {
-            return response.status(401).send({ error: 'Not authorized'})
-        }
+        const data = request.all()
 
-        await user.delete()
+        user.merge(data)
+
+        await user.save()
+
+        return user
+
     }
-    */
 }
 
 module.exports = UserController
