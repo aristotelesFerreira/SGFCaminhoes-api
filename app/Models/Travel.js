@@ -10,20 +10,26 @@ class Travel extends Model {
     }
 
     driver() {
-        return this.hasOne('App/Models/Driver')
+        return this.belongsTo('App/Models/Driver')
     }
 
     vehicle() {
-        return this.hasMany('App/Models/Vehicle')
+        return this.belongsTo('App/Models/Vehicle')
     }
 
     carts() {
-        return this.belongsToMany('App/Models/Cart')
+        return this
+        .belongsToMany('App/Models/Cart')
+        .pivotTable('cart_travels')
     }
 
     itinerary() {
-        return this.hasOne('App/Models/Itinerary')
+        return this.belongsTo('App/Models/Itinerary', 'itinerary_id', 'id')
     }
+
+    static get hidden () {
+        return ['driver_id', 'vehicle_id', 'cart_id', 'itinerary_id']
+      }
 
 }
 

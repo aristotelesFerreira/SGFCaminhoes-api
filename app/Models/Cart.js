@@ -7,7 +7,7 @@ class Cart extends Model {
         super.boot()
         this.addHook('beforeCreate', 'CommonHook.getUuid')
     }
-    travel() {
+    travels() {
         return this.belongsToMany('App/Models/Travel')
     }
 }
