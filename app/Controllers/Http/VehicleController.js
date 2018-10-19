@@ -4,11 +4,14 @@ const Vehicle = use('App/Models/Vehicle')
 
 class VehicleController {
   
-  async index () {
-    const vehicles = Vehicle.all()
+  async index ({request}) {
+    const data = request.all()
+
+    const vehicles = Vehicle.query().where(data)
 
     return vehicles
   }
+  
 
   
   async store ({ request }) {

@@ -4,9 +4,10 @@ const Itinerary = use('App/Models/Itinerary')
 
 class ItineraryController {
  
-  async index () {
+  async index ({request}) {
+    const data = request.all()
     
-    const itineraries = Itinerary.all()
+    const itineraries = Itinerary.query().where(data)
 
     return itineraries
   }

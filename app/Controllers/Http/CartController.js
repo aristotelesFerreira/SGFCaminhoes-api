@@ -4,8 +4,10 @@ const Cart = use ('App/Models/Cart')
 
 class CartController {
  
-  async index () {
-    const cart = Cart.all()
+  async index ({request}) {
+    const data = request.all()
+
+    const cart = Cart.query().where(data)
     //const cart = await Cart.query().where('status', true)
 
     return cart

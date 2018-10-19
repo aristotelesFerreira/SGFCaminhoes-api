@@ -4,10 +4,13 @@ const Driver = use('App/Models/Driver')
 
 class DriverController {
 
-    async index () {
-        const drivers = Driver.all()
+    async index ({ request }) {
+        const data = request.all()
 
-        return drivers
+        const driver = Driver.query().where(data)
+        
+        return driver
+
     }
   
     async store ({ request }) {
