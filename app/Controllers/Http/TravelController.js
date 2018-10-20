@@ -68,7 +68,7 @@ class TravelController {
       .with('vehicle')
       .with('driver')
       .with('itinerary')
-      .fetch()
+      .firstOrFail()
    
     return travel
     //Buscar as viagens de um driver_id
