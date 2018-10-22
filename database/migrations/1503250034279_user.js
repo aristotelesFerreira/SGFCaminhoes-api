@@ -7,7 +7,8 @@ class UserSchema extends Schema {
     this.create('users', (table) => {
       table.increments()
       table.string('uuid').notNullable().unique()
-      table.string('email', 254).notNullable().unique()
+      table.string('name', 100).notNullable()
+      table.string('email', 100).notNullable().unique()
       table.string('password', 60).notNullable()
       table.enum('acess',['operator', 'admin']).notNullable()
       table.boolean('status').notNullable()

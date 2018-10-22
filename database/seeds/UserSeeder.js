@@ -17,6 +17,7 @@ const User = use('App/Models/User')
 class UserSeeder {
   async run () {
     await User.create({
+      name: 'Admin',
       email: 'admin@admin.com',
       password: '123456',
       acess: 'admin',
