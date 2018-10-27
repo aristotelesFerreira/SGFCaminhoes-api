@@ -28,7 +28,7 @@ const Hash = use('Hash')
     return {
       name: 'Joao Batista Ferreira',
       cpf_number: '155.581.864-80',
-      drivers_license: 'ABCDE',
+      drivers_license: 'AE',
       admission_date: '2018-08-15',
       //resignation_date: '',
       driversLicense_validate: '2018-09-20',
