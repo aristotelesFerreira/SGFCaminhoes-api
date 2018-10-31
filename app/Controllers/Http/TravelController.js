@@ -1,4 +1,4 @@
-import * as jsPDF from 'jspdf'
+
 'use strict'
 
 const Driver = use('App/Models/Driver')
@@ -115,15 +115,6 @@ class TravelController {
 
     return travel
   }
-
-  async geraPDF({}) {
-    var doc = new jsPDF()
-
-    doc.text(10, 10, 'Hello world!' )
-    //documento.output("dataurlnewwindow");
-    doc.save('a4.pdf')
-  }
-
   
 }
 

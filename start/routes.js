@@ -1,25 +1,22 @@
 
 'use strict'
+
+var fs = require('fs')
 var path = require('path')
 var wkhtmltopdf = require('wkhtmltopdf')
 
+
 const Route = use('Route')
-// Rotas sem autenticação
 
 Route.post('/users', 'UserController.store')
 Route.post('/auth', 'AuthenticationController.create')
 
 
 
-Route.get('/pdf', function(req, res) {
-
-  return 'ok'
-})
-
-
 
 // Rotas com autenticação
  
+Route.get('report/driver/:id', 'ReportController.driverReport').middleware('auth')
 
 Route.get('users', 'UserController.index').middleware('auth')
 Route.get('users/:id', 'UserController.show').middleware('auth')
