@@ -17,9 +17,12 @@ Route.post('/auth', 'AuthenticationController.create')
 // Rotas com autenticação
  
 Route.get('report/driver/:id', 'ReportController.driverReport').middleware('auth')
+Route.get('report/vehicle/:id', 'ReportController.vehicleReport').middleware('auth')
+Route.get('report/cart/:id', 'ReportController.cartReport').middleware('auth')
 
 Route.get('users', 'UserController.index').middleware('auth')
 Route.get('users/:id', 'UserController.show').middleware('auth')
+
 
 Route.resource('drivers', 'DriverController')
   .apiOnly()
