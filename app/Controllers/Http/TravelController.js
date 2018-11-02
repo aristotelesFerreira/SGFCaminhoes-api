@@ -55,7 +55,6 @@ class TravelController {
         }
       }
      
-
     return travel
   }
 
