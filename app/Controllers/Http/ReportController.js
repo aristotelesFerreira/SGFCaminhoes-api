@@ -16,7 +16,7 @@ const Vehicle = use('App/Models/Vehicle')
 const Travel = use('App/Models/Travel')
 const Cart = use('App/Models/Cart')
 const Itinerary = use('App/Models/Itinerary')
-
+const Database = use('Database')
 var data = new Date();
 var str_data = data.getDate() + '/' + (data.getMonth()+1) + '/' + data.getFullYear();
 var str_hora = data.getHours() + ':' + data.getMinutes() + ':' + data.getSeconds();
@@ -33,6 +33,14 @@ class ReportController {
           const admission_date =  moment(new Date(driver.admission_date)).format('DD/MM/YYYY')
           const resignation_date =  moment(new Date(driver.resignation_date)).format('DD/MM/YYYY')
     
+          var status = ''
+          if(driver.status == 1){
+            status = 'Ativo'
+            } 
+            else {
+            status = 'Inativo'
+            }
+
           var docDefinition = {
             pageSize: 'A4',
             pageMargins: [ 40, 60, 40, 60 ],
@@ -119,17 +127,7 @@ class ReportController {
       
               body: [
                 // Table Header
-                [ 
-                    {
-                        text: 'Descrição',
-                        style: 'itemsHeader'
-                    }, 
-                    {
-                      text: 'Especificação',
-                      style: 'itemsHeader'
-                  }, 
-                   
-                ],
+               
                 // Items
                 // Item 1
                 [ 
@@ -230,6 +228,17 @@ class ReportController {
                       text:  resignation_date
                     } 
                 ],
+                [ 
+                    [
+                        {
+                            text: 'Status',
+                        }, 
+                        
+                    ],
+                    {
+                      text:  status
+                    } 
+                ],
                 // END Items
               ]
             }, // table
@@ -254,6 +263,7 @@ class ReportController {
           var pdfDoc = printer.createPdfKitDocument(docDefinition)
           pdfDoc.pipe(fs.createWriteStream('C:/laragon/etc/apps/laragon/uploads/motorista.pdf'))
           pdfDoc.end()
+          return 'sucesso'
 
         }
         
@@ -356,18 +366,7 @@ class ReportController {
           widths: [ '*', '*' ],
   
           body: [
-            // Table Header
-            [ 
-                {
-                    text: 'Descrição',
-                    style: 'itemsHeader'
-                }, 
-                {
-                  text: 'Especificação',
-                  style: 'itemsHeader'
-              }, 
-               
-            ],
+          
             // Items
             // Item 1
             [ 
@@ -412,12 +411,12 @@ class ReportController {
             [ 
                 [
                     {
-                        text: 'KM Atual',
+                        text: 'Kilometragem atual',
                     }, 
 
                 ],
                 {
-                  text:  vehicle.km_current
+                  text:  vehicle.km_current+'km'
                 } 
             ],
             // Item 5
@@ -524,6 +523,7 @@ class ReportController {
         var pdfDoc = printer.createPdfKitDocument(docDefinition)
         pdfDoc.pipe(fs.createWriteStream('C:/laragon/etc/apps/laragon/uploads/veiculo.pdf'))
         pdfDoc.end()
+        return 'sucesso'
 
       } catch(error) {
         console.log(error)
@@ -620,17 +620,7 @@ class ReportController {
   
           body: [
             // Table Header
-            [ 
-                {
-                    text: 'Descrição',
-                    style: 'itemsHeader'
-                }, 
-                {
-                  text: 'Especificação',
-                  style: 'itemsHeader'
-              }, 
-               
-            ],
+            
             // Items
             // Item 1
             [ 
@@ -688,12 +678,12 @@ class ReportController {
             [ 
                 [
                     {
-                        text: 'KM Atual',
+                        text: 'Kilometragem atual',
                     }, 
 
                 ],
                 {
-                  text:  cart.km_current
+                  text:  cart.km_current+'km'
                 } 
             ],
             // Item 5
@@ -804,6 +794,7 @@ class ReportController {
         var pdfDoc = printer.createPdfKitDocument(docDefinition)
         pdfDoc.pipe(fs.createWriteStream('C:/laragon/etc/apps/laragon/uploads/carreta.pdf'))
         pdfDoc.end()
+        return 'sucesso'
 
         
       }catch(error){
@@ -812,32 +803,32 @@ class ReportController {
     }
 
     async travelReport ({ params }){
-       // const Database = use('Database')
+      
         try{
-        const travel = await Travel.query()
-        .where('uuid', params.id)
-        .with('carts')
-        .with('vehicle')
-        .with('driver')
-        .with('itinerary')
-        .firstOrFail()
+           
+            const travel = await Database
+            .select('name', 'cpf_number', 'phone_1','phone_2',
+            'brand','plate','type','model','km_current',
+            'distance','arrivalDate', 'departureDate', 'travels.status')
+            .from('travels')
+            .innerJoin('drivers', 'drivers.id', 'travels.driver_id')
+            .innerJoin('vehicles', 'vehicles.id', 'travels.vehicle_id')
+            .innerJoin('itineraries', 'itineraries.id', 'travels.itinerary_id')
+            .where('travels.uuid', params.id)
+            
+   
+           
+        const departureDate =  moment(new Date(travel[0].departureDate)).format('DD/MM/YYYY')
+        const arrivalDate =  moment(new Date(travel[0].arrivalDate)).format('DD/MM/YYYY')
 
-        //const teste = await Travel.query().whereWas(Travel.carts.query().where('id', 1))
-
-        return teste 
-
-        const driver = await Driver.query().where('id', travel.driver_id).firstOrFail()
-        const vehicle = await Vehicle.query().where('id', travel.vehicle_id).firstOrFail()
-        //const carts_ids = await Database.table('cart_travels').where('travel_id', travel.id)
-        //var carts = []
-
-        //return carts_ids
-
-        const departureDate =  moment(new Date(travel.departureDate)).format('DD/MM/YYYY')
-        const arrivalDate =  moment(new Date(travel.arrivalDate)).format('DD/MM/YYYY')
         var status = ''
+        var x = travel[0].distance/1000
+        var y = travel[0].km_current/1000
+
+        var distance = x.toFixed(0)
+        var km_total = y.toFixed(0)
         
-        if(travel.status == 'in_progress'){
+        if(travel[0].status == 'in_progress'){
             status = 'Em Andamento'
         } else if(travel.status == 'finished'){
             status = 'Concluída'
@@ -943,7 +934,7 @@ class ReportController {
                             },
                         ],
                         {
-                        text: driver.name
+                        text: travel[0].name
                         } 
                     
                     ],
@@ -955,7 +946,7 @@ class ReportController {
                             },
                         ],
                         {
-                        text: driver.cpf_number
+                        text: travel[0].cpf_number
                         } 
                     
                     ],
@@ -967,7 +958,7 @@ class ReportController {
                             },
                         ],
                         {
-                        text: driver.phone_1
+                        text: travel[0].phone_1
                         } 
                     
                     ],
@@ -979,7 +970,7 @@ class ReportController {
                             },
                         ],
                         {
-                        text: driver.phone_1
+                        text: travel[0].phone_2
                         } 
                     
                     ],
@@ -1016,7 +1007,7 @@ class ReportController {
                         
                     ],
                     {
-                      text: vehicle.brand
+                      text: travel[0].brand
                     } 
                 ],
                 // Item 2
@@ -1028,7 +1019,7 @@ class ReportController {
                         
                     ],
                     {
-                      text: vehicle.model
+                      text: travel[0].model
                     } 
                 ],
                 // Item 3
@@ -1040,7 +1031,7 @@ class ReportController {
                         
                     ],
                     {
-                      text: vehicle.type
+                      text: travel[0].type
                     } 
                 ],
                 // Item 4
@@ -1053,20 +1044,20 @@ class ReportController {
                         
                     ],
                     {
-                      text: vehicle.plate
+                      text: travel[0].plate
                     } 
                 ],
                 // Item 5
                 [ 
                     [
                         {
-                            text: 'Km Atual',
+                            text: 'Kilometragem atual',
                             style:'itemTitle'
                         }, 
                         
                     ],
                     {
-                      text: vehicle.km_current
+                      text: km_total+'km'
                     } 
                 ],
                 
@@ -1148,6 +1139,17 @@ class ReportController {
                       text:  arrivalDate
                     } 
                 ],
+                [ 
+                    [
+                        {
+                            text: 'Distância',
+                        }, 
+                        
+                    ],
+                    {
+                      text:  distance+'km'
+                    } 
+                ],
                 // Item 3
                 [ 
                     [
@@ -1185,19 +1187,24 @@ class ReportController {
             var pdfDoc = printer.createPdfKitDocument(docDefinition)
             pdfDoc.pipe(fs.createWriteStream('C:/laragon/etc/apps/laragon/uploads/viagem.pdf'))
             pdfDoc.end()
+            return 'sucesso'
     
             
         }catch(error){
+            console.log(error)
     
     }
 
     }
     
-    async travelReportDate ({ params }) {
+    async travelReportDate ({ params, request }) {
+        const data = request.all()
+
+        //const driver = Driver.query().where(data)
         var column = []
         var value = []
         var status = ''
-        const Database = use('Database')
+      
 
         try {
           
@@ -1206,16 +1213,21 @@ class ReportController {
             .from('travels')
             .innerJoin('drivers', 'drivers.id', 'travels.driver_id')
             .innerJoin('itineraries', 'itineraries.id', 'travels.itinerary_id')
-            .whereBetween('arrivalDate', [params.data, params.data2])
+            .whereBetween(params.filter, [params.data, params.data2])
+            .where(data)
            
+           // return travel
             var kmInProgress = 0
             var acrescentarDistancia = 0
             var kmCanceled = 0
             var totalCanceled = 0
             var totalFinished = 0
             var totalInProgress = 0
-        //return travel
-        
+        //return travel.length
+        if(travel == ''){
+            return 'Não existe dados'
+        }else {
+
         for(let i=0; i < travel.length ; i++) {
             //retirar ponto da distancia
             var x = travel[i].distance/1000
@@ -1317,6 +1329,7 @@ class ReportController {
                 ])
                 
         }
+    }
         var DistanciaTotal = (acrescentarDistancia/1000).toFixed(0)
         var KmEmAndamento = (kmInProgress/1000).toFixed(0)
         var TotalKmCanceled = (kmCanceled/1000).toFixed(0)
@@ -1438,6 +1451,7 @@ class ReportController {
             var pdfDoc = printer.createPdfKitDocument(docDefinition)
             pdfDoc.pipe(fs.createWriteStream('C:/laragon/etc/apps/laragon/uploads/viagem_data.pdf'))
             pdfDoc.end()
+            return 'sucesso'
 
         }catch(error){
             console.log(error)
