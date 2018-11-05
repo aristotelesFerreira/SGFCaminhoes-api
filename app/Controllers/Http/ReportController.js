@@ -1393,6 +1393,15 @@ class ReportController {
 
         try {
           
+            /*const travel = await Database
+            .select('route_name', 'vehicles.plate','name', 'distance', 'arrivalDate', 'departureDate', '1.status')
+            .from(['cart_travels', 'travels'])
+            .innerJoin('drivers', 'drivers.id', '1.driver_id')
+            .innerJoin('vehicles', 'vehicles.id', '1.vehicle_id')
+            .innerJoin('itineraries', 'itineraries.id', '1.itinerary_id')
+            .whereBetween(params.filter, [params.data, params.data2])
+            .where(data)*/
+
             const travel = await Database
             .select('route_name', 'vehicles.plate','name', 'distance', 'arrivalDate', 'departureDate', 'travels.status')
             .from('travels')
@@ -1400,9 +1409,18 @@ class ReportController {
             .innerJoin('vehicles', 'vehicles.id', 'travels.vehicle_id')
             .innerJoin('itineraries', 'itineraries.id', 'travels.itinerary_id')
             .whereBetween(params.filter, [params.data, params.data2])
+            .orderBy(params.filter, 'cres')
             .where(data)
+ 
+
+            /*const carts = await Database
+            .select('travel_id','brand', 'model', 'plate', 'type' )
+            .from('cart_travels')
+            .innerJoin('carts', 'carts.id', 'cart_travels.cart_id')
+            .innerJoin('travels', 'travels.id', 'cart_travels.travel_id')
+            .whereBetween(params.filter, [params.data, params.data2])
+            .where(data)*/
            
-           // return travel
             var kmInProgress = 0
             var acrescentarDistancia = 0
             var kmCanceled = 0
