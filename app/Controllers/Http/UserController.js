@@ -4,30 +4,43 @@ const User = use("App/Models/User")
 
 class UserController {
 
-    async index ({request}) {
+    async index ({auth, request}) {  
         const data = request.all()
 
-       
         const users = User.query().where(data)
-
+      
         return users
+
     }
     
-    async store ({ request }) {
-        const data = request.only(['email', 'password', 'acess', 'status'])
+    async store ({auth, request }) {
+       // const acess = auth.user.acess
+        //return auth.user
+        //if(acess == 'admin'){
+        const data = request.only(['name', 'email', 'password', 'acess', 'status'])
 
         const user = await User.create(data)
 
         return user
+       // }else {
+            return 'Sem permissão'
+       // }
     }
 
-    async show ({ params }) {
+    async show ({auth, params }) {
+        const acess = auth.user.acess
+        if(acess == 'admin'){
         const user = await User.query().where('uuid', params.id)
 
         return user
+        }else {
+            return 'Sem permissão'
+        }
     }
 
-    async update ({ params, request, response }) {
+    async update ({ auth, params, request, response }) {
+        const acess = auth.user.acess
+        if(acess == 'admin'){
         const user = await User.query().where('uuid', params.id).firstOrFail()
 
         const data = request.all()
@@ -37,6 +50,9 @@ class UserController {
         await user.save()
 
         return user
+        }else {
+            return 'Sem permissão'
+        }
 
     }
 }
