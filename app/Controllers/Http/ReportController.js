@@ -809,14 +809,40 @@ class ReportController {
             const travel = await Database
             .select('name', 'cpf_number', 'phone_1','phone_2',
             'brand','plate','type','model','km_current',
-            'distance','arrivalDate', 'departureDate', 'travels.status')
+            'distance','arrivalDate', 'departureDate', 'travels.status', 'route_name',
+            'initial_point', 'end_point', 'observation')
             .from('travels')
             .innerJoin('drivers', 'drivers.id', 'travels.driver_id')
             .innerJoin('vehicles', 'vehicles.id', 'travels.vehicle_id')
             .innerJoin('itineraries', 'itineraries.id', 'travels.itinerary_id')
             .where('travels.uuid', params.id)
+
+            /*const carts = await Travel.query()
+            .with('carts')
+            .whereHas('carts')
+            .firstOrFail()
+            console.log(carts.carts)
+            return carts*/
+
+            /*const carts = await Travel.query().whereHas('carts', (builder) => {
+                builder.where('status', true)
+              }).fetch()
+
+              return carts*/
+
             
-   
+            //Apagar depois isso.
+            const carts = await Database
+            .select('brand', 'model', 'plate', 'type' )
+            .from('cart_travels')
+            .innerJoin('carts', 'carts.id', 'cart_travels.cart_id')
+            .innerJoin('travels', 'travels.id', 'cart_travels.travel_id')
+            .where('travels.uuid', params.id)
+          
+
+            //return carts
+
+
            
         const departureDate =  moment(new Date(travel[0].departureDate)).format('DD/MM/YYYY')
         const arrivalDate =  moment(new Date(travel[0].arrivalDate)).format('DD/MM/YYYY')
@@ -830,7 +856,7 @@ class ReportController {
         
         if(travel[0].status == 'in_progress'){
             status = 'Em Andamento'
-        } else if(travel.status == 'finished'){
+        } else if(travel[0].status == 'finished'){
             status = 'Concluída'
         }else {
             status = 'Cancelada'
@@ -1082,15 +1108,184 @@ class ReportController {
                 widths: [ '*', '*'],
                 body: [
                      // Item 1
+                    carts[0] !== undefined ?
+                        carts[0].type !== 'Dolly' ? 
                     [ 
                         [
                             {
-                                text: 'Data de Partida',
+                                text: 'Placa 1º Carreta',
                             }, 
                             
                         ],
                         {
-                        text:  departureDate
+                          text: carts[0].plate
+                        } 
+                    ] 
+                    :
+                    [ 
+                        [
+                            {
+                                text: 'Placa Dolly',
+                            }, 
+                            
+                        ],
+                        {
+                          text: carts[0].plate
+                        } 
+                    ]
+                    : 
+                    [ 
+                        [
+                            {
+                                text: ''
+                            }, 
+                            
+                        ],
+                        {
+                            text: ''
+                        } 
+                    ],
+                    // Item 2
+                    carts[1] !== undefined ?
+                        carts[1].type !== 'Dolly' ? 
+                    [ 
+                        [
+                            {
+                                text: 'Placa 2º Carreta',
+                            }, 
+                            
+                        ],
+                        {
+                          text: carts[1].plate
+                        } 
+                    ] 
+                    :
+                    [ 
+                        [
+                            {
+                                text: 'Placa Dolly',
+                            }, 
+                            
+                        ],
+                        {
+                          text: carts[1].plate
+                        } 
+                    ]
+                    : 
+                    [ 
+                        [
+                            {
+                                text: ''
+                            }, 
+                            
+                        ],
+                        {
+                            text: ''
+                        } 
+                    ],
+                    // Item 3
+                    carts[2] !== undefined ?
+                    carts[2].type == 'Dolly' ? 
+                [ 
+                    [
+                        {
+                            text: 'Placa Dolly',
+                        }, 
+                        
+                    ],
+                    {
+                      text: carts[2].plate
+                    } 
+                ] 
+                :
+                [ 
+                    [
+                        {
+                            text: ''
+                        }, 
+                        
+                    ],
+                    {
+                      text: ''
+                    } 
+                ]
+                : 
+                [ 
+                    [
+                        {
+                            text: ''
+                        }, 
+                        
+                    ],
+                    {
+                        text: ''
+                    } 
+                ],
+
+                ]
+            }
+        },
+        '\n',
+        {
+            columns: [
+                {
+                    text: 'Itinerário',
+                    fontSize: '18',
+                    alignment: 'left'
+                }
+            ]
+        },
+        {
+            table: {
+                headerRows: 1,
+                widths: [ '*', '*'],
+                body: [
+                     // Item 1
+                    [ 
+                        [
+                            {
+                                text: 'Nome da Rota',
+                            },
+                            
+                        ],
+                        {
+                        text:  travel[0].route_name
+                        } 
+                    ],
+                     // Item 2
+                    [ 
+                        [
+                            {
+                                text: 'Ponto Inicial',
+                            },
+                            
+                        ],
+                        {
+                        text:  travel[0].initial_point
+                        } 
+                    ],
+                     // Item 3
+                    [ 
+                        [
+                            {
+                                text: 'Ponto Final',
+                            },
+                            
+                        ],
+                        {
+                        text:  travel[0].end_point
+                        } 
+                    ],
+                     // Item 4
+                     [ 
+                        [
+                            {
+                                text: 'Distância',
+                            }, 
+                            
+                        ],
+                        {
+                          text:  distance+'km'
                         } 
                     ],
                 ]
@@ -1139,17 +1334,7 @@ class ReportController {
                       text:  arrivalDate
                     } 
                 ],
-                [ 
-                    [
-                        {
-                            text: 'Distância',
-                        }, 
-                        
-                    ],
-                    {
-                      text:  distance+'km'
-                    } 
-                ],
+               
                 // Item 3
                 [ 
                     [
@@ -1209,9 +1394,10 @@ class ReportController {
         try {
           
             const travel = await Database
-            .select('route_name', 'name', 'distance', 'arrivalDate', 'departureDate', 'travels.status')
+            .select('route_name', 'vehicles.plate','name', 'distance', 'arrivalDate', 'departureDate', 'travels.status')
             .from('travels')
             .innerJoin('drivers', 'drivers.id', 'travels.driver_id')
+            .innerJoin('vehicles', 'vehicles.id', 'travels.vehicle_id')
             .innerJoin('itineraries', 'itineraries.id', 'travels.itinerary_id')
             .whereBetween(params.filter, [params.data, params.data2])
             .where(data)
@@ -1259,12 +1445,14 @@ class ReportController {
                         [
                             [
                                 {
-                                    text: 'Nome da Rota'
+                                    text: 'Nome da Rota',
+                                    fontSize: '11'
                                        
                                 },
                             ],
                             {
                                 text: travel[i].route_name,
+                                fontSize: '11'
                                
                             }
                             
@@ -1273,10 +1461,12 @@ class ReportController {
                             [
                                 {
                                 text: 'Motorista',
+                                fontSize: '11'
                                 }, 
                             ],
                             {
-                                text: travel[i].name
+                                text: travel[i].name,
+                                fontSize: '11'
                             }
                             
                             
@@ -1284,22 +1474,40 @@ class ReportController {
                         [   [
                                 {
                                     
-                                    text: 'Distância',
+                                    text: 'Veículo',
+                                    fontSize: '11'
                                 }, 
                             ],
                             {
                               
-                                text: distance+'km'
+                                text: travel[i].plate,
+                                fontSize: '11'
+                            }
+                            
+                        ],
+                        [   [
+                                {
+                                    
+                                    text: 'Distância',
+                                    fontSize: '11'
+                                }, 
+                            ],
+                            {
+                              
+                                text: distance+'km',
+                                fontSize: '11'
                             }
                             
                         ],
                         [   [
                                 {
                                     text: 'Partida',
+                                    fontSize: '11'
                                 }, 
                             ],
                             {
-                                text: travel[i].arrivalDate = moment(new Date(travel[i].arrivalDate)).format('DD/MM/YYYY')
+                                text: travel[i].departureDate =  moment(new Date(travel[i].departureDate)).format('DD/MM/YYYY'),
+                                fontSize: '11'
                             }
                             
                         ],
@@ -1307,10 +1515,12 @@ class ReportController {
                             [
                                 {
                                     text: 'Chegada',
+                                    fontSize: '11'
                                 }, 
                             ],
                             {
-                                text: travel[i].departureDate =  moment(new Date(travel[i].departureDate)).format('DD/MM/YYYY')
+                                text: travel[i].arrivalDate = moment(new Date(travel[i].arrivalDate)).format('DD/MM/YYYY'),
+                                fontSize: '11'
                             }
                             
                         ],
@@ -1318,10 +1528,13 @@ class ReportController {
                             [
                                 {
                                     text: 'Status',
+                                    fontSize: '11'
+                                    
                                 }, 
                             ],
                             {
-                                text: status
+                                text: status,
+                                fontSize: '11'
                             }
                             
                         ],
@@ -1356,7 +1569,7 @@ class ReportController {
                                 {
                                     columns: [
                                         {
-                                            text: 'Nome da empresa'
+                                            text: 'Sistema para Gerenciamento de Frotas'
                                         },
                                         {
                                             text: 'Data: '+str_data,
@@ -1368,7 +1581,8 @@ class ReportController {
                                 {
                                     columns: [
                                         {
-                                            text:'CNPJ',
+                                            text:'xx.xxx.xxx/xxxx-xx',
+                                            fontSize: '11'
                                           
                                         }, 
                                         {
@@ -1381,7 +1595,8 @@ class ReportController {
                                 {
                                   columns: [
                                       {
-                                          text:'Endereço',
+                                          text:'Rua Santa Fé, QD 29 LT 03 Jussara - GO',
+                                          fontSize: '11'
                                         
                                       }, 
                                     ]
@@ -1409,7 +1624,7 @@ class ReportController {
                 {
                     table: {
                           headerRows: 1,
-                          widths: [ 135, 150, 50, 55, 55, 80],
+                          widths: [ 110, 120, 60, 50, 55, 55, 70],
                           body: column 
                                     
                     }
@@ -1426,19 +1641,19 @@ class ReportController {
                    
                   },
                   { 
-                    text: 'Viagens concluídas: '+totalFinished+' ( '+DistanciaTotal+'KM )',
+                    text: 'Total concluídas: '+totalFinished+' ( '+DistanciaTotal+'KM )',
                     fontSize: '12',
                     color: 'green'
                    
                   },
                   { 
-                    text: 'Viagens em andamento: '+ totalInProgress+' ( '+KmEmAndamento+'KM )',
+                    text: 'Total em andamento: '+ totalInProgress+' ( '+KmEmAndamento+'KM )',
                     fontSize: '12',
                     color: 'blue'
                    
                   },
                   { 
-                    text: 'Viagens canceladas: '+ totalCanceled+' ( ' +TotalKmCanceled+'KM )',
+                    text: 'Total canceladas: '+ totalCanceled+' ( ' +TotalKmCanceled+'KM )',
                     fontSize: '12',
                     color: 'red'
                    
