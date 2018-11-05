@@ -22,7 +22,7 @@ Route.get('report/cart/:id', 'ReportController.cartReport').middleware('auth')
 Route.get('report/travel/:id', 'ReportController.travelReport').middleware('auth')
 Route.get('report/traveldate/:filter/:data/:data2/', 'ReportController.travelReportDate').middleware('auth')
 
-Route.get('users', 'UserController.index').middleware('auth')
+Route.get('users/', 'UserController.index').middleware('auth')
 Route.get('users/:id', 'UserController.show').middleware('auth')
 
 

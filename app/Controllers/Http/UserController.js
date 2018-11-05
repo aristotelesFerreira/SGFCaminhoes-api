@@ -4,8 +4,11 @@ const User = use("App/Models/User")
 
 class UserController {
 
-    async index () {
-        const users = User.all()
+    async index ({request}) {
+        const data = request.all()
+
+       
+        const users = User.query().where(data)
 
         return users
     }
