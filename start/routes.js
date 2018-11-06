@@ -11,6 +11,7 @@ const Route = use('Route')
 Route.post('/users', 'UserController.store')
 Route.post('/auth', 'AuthenticationController.create')
 
+Route.post('/recovery', 'AuthenticationController.sendEmail')
 
 
 
@@ -29,7 +30,7 @@ Route.get('users/:id', 'UserController.update').middleware('auth')*/
 Route.resource('users', 'UserController')
   .apiOnly()
   .middleware('auth')
-  
+
 Route.resource('drivers', 'DriverController')
   .apiOnly()
   .middleware('auth')
