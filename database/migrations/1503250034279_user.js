@@ -12,6 +12,7 @@ class UserSchema extends Schema {
       table.string('password', 60).notNullable()
       table.enum('acess',['operator', 'admin']).notNullable()
       table.boolean('status').notNullable()
+      table.string('recovery_uuid', 50)
       table.timestamps()
     })
   }

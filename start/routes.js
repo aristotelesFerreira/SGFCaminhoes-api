@@ -13,7 +13,7 @@ Route.post('/auth', 'AuthenticationController.create')
 
 Route.post('/recovery', 'AuthenticationController.sendEmail')
 
-
+Route.put('users/:type/:id', 'UserController.update')
 
 // Rotas com autenticação
  
@@ -26,6 +26,8 @@ Route.get('report/traveldate/:filter/:data/:data2/', 'ReportController.travelRep
 /*Route.get('users/', 'UserController.index').middleware('auth')
 Route.get('users/:id', 'UserController.show').middleware('auth')
 Route.get('users/:id', 'UserController.update').middleware('auth')*/
+
+Route.put('users/:type/:id', 'UserController.update').middleware('auth')
 
 Route.resource('users', 'UserController')
   .apiOnly()

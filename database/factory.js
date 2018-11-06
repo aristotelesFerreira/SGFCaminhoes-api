@@ -57,7 +57,7 @@ const Hash = use('Hash')
       brand: 'Randon',
       model: 'Graneleiro',
       description: '7.50m X 1.80M',
-      type: 'Bitrem',
+      type: 'Dois eixos',
       km_current: '500',
       year: '2011',
       capacity: '32000.00',

@@ -39,9 +39,10 @@ class UserController {
     }
 
     async update ({ auth, params, request, response }) {
-        const acess = auth.user.acess
-        if(acess == 'admin'){
-        const user = await User.query().where('uuid', params.id).firstOrFail()
+
+        const verify = await User.query().where(params.type, params.id)
+        if(verify.length >= 1){
+        const user = await User.query().where(params.type, params.id).firstOrFail()
 
         const data = request.all()
 
@@ -50,9 +51,10 @@ class UserController {
         await user.save()
 
         return user
-        }else {
-            return 'Sem permissão'
+        } else {
+            return 'Filtro não encontrado'
         }
+        
 
     }
 }
