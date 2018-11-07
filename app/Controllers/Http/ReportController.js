@@ -1389,37 +1389,52 @@ class ReportController {
         var column = []
         var value = []
         var status = ''
-      
+       
 
         try {
-          
-            /*const travel = await Database
-            .select('route_name', 'vehicles.plate','name', 'distance', 'arrivalDate', 'departureDate', '1.status')
-            .from(['cart_travels', 'travels'])
-            .innerJoin('drivers', 'drivers.id', '1.driver_id')
-            .innerJoin('vehicles', 'vehicles.id', '1.vehicle_id')
-            .innerJoin('itineraries', 'itineraries.id', '1.itinerary_id')
-            .whereBetween(params.filter, [params.data, params.data2])
-            .where(data)*/
+            var cart = []
+            var travel = []
+            
 
-            const travel = await Database
-            .select('route_name', 'vehicles.plate','name', 'distance', 'arrivalDate', 'departureDate', 'travels.status')
-            .from('travels')
-            .innerJoin('drivers', 'drivers.id', 'travels.driver_id')
-            .innerJoin('vehicles', 'vehicles.id', 'travels.vehicle_id')
-            .innerJoin('itineraries', 'itineraries.id', 'travels.itinerary_id')
-            .whereBetween(params.filter, [params.data, params.data2])
-            .orderBy(params.filter, 'cres')
-            .where(data)
- 
+            if(data.cart_id){
+              
+                 cart = await Database
+                .select('travel_id', 'cart_id')
+                .from('cart_travels')
+                .innerJoin('travels', 'travels.id', 'cart_travels.travel_id')
+                .innerJoin('carts', 'carts.id', 'cart_travels.cart_id')
+                .where('cart_id', data.cart_id)
+               
+                
+                for(let i=0; i<cart.length; i++){
+                    
+                     travel = await Database
+                    .select('route_name', 'vehicles.plate','name', 'distance', 'arrivalDate', 'departureDate', 'travels.status')
+                    .from('travels')
+                    .innerJoin('drivers', 'drivers.id', 'travels.driver_id')
+                    .innerJoin('vehicles', 'vehicles.id', 'travels.vehicle_id')
+                    .innerJoin('itineraries', 'itineraries.id', 'travels.itinerary_id')
+                    .whereBetween(params.filter, [params.data, params.data2])
+                    .orderBy(params.filter, 'cres')
+                    //.where(data.travels_status.length == 2 ? 'travels.status'= '' : 'travels.status', data.travels_status )
+                    .where('travels.status', data.travels_status)
+                    .where( 'travels.id', cart[i].travel_id)
+                   
+                }
+               
+            }else {
+                 travel = await Database
+                .select('route_name', 'vehicles.plate','name', 'distance', 'arrivalDate', 'departureDate', 'travels.status')
+                .from('travels')
+                .innerJoin('drivers', 'drivers.id', 'travels.driver_id')
+                .innerJoin('vehicles', 'vehicles.id', 'travels.vehicle_id')
+                .innerJoin('itineraries', 'itineraries.id', 'travels.itinerary_id')
+                .whereBetween(params.filter, [params.data, params.data2])
+                .orderBy(params.filter, 'cres')
+                .where(data)
+            }
+           
 
-            /*const carts = await Database
-            .select('travel_id','brand', 'model', 'plate', 'type' )
-            .from('cart_travels')
-            .innerJoin('carts', 'carts.id', 'cart_travels.cart_id')
-            .innerJoin('travels', 'travels.id', 'cart_travels.travel_id')
-            .whereBetween(params.filter, [params.data, params.data2])
-            .where(data)*/
            
             var kmInProgress = 0
             var acrescentarDistancia = 0
@@ -1427,7 +1442,7 @@ class ReportController {
             var totalCanceled = 0
             var totalFinished = 0
             var totalInProgress = 0
-        //return travel.length
+  
         if(travel == ''){
             return 'Não existe dados'
         }else {

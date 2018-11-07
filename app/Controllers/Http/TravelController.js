@@ -20,6 +20,14 @@ class TravelController {
       .with('driver')
       .with('itinerary')
       .fetch()
+     
+     /* travel.then(function(result) {
+        //console.log(result.rows[0].$relations.carts.rows.length)
+     for(let i=0; i<result.rows[0].$relations.carts.rows.length; i++){
+      
+        console.log(result.rows[0].$relations.carts.rows[i].$attributes) //will log results.
+     }
+    })*/
 
     return travel
   }
@@ -69,11 +77,7 @@ class TravelController {
       .firstOrFail()
    
     return travel
-    //Buscar as viagens de um driver_id
-    //const driver = await Driver.findOrFail(params.id)
-   // const travel = await driver.travel().where('driver_id', params.id)//select*from drivers
-    
-   // return travel
+  
   }
 
 

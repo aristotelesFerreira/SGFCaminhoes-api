@@ -59,14 +59,13 @@ class AuthenticationController {
             nodemailer.createTestAccount((err, account) => { 
                 let transporter = nodemailer.createTransport({
                    service: 'gmail',
-                   //host: 'smtp.ethereal.email',
                    port: 587,
                    secure: false,
                    port: 25,
                     auth: {
                        
-                        user: config.email, // generated ethereal user
-                        pass: config.password// generated ethereal password
+                        user: config.email, 
+                        pass: config.password
                     },
                     tls:{
                         rejectUnauthorized: false
