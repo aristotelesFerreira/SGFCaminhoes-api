@@ -17,15 +17,17 @@ Route.put('users/:type/:id', 'UserController.update')
 
 // Rotas com autenticação
  
+//Reports Travels
 Route.get('report/driver/:id', 'ReportController.driverReport').middleware('auth')
 Route.get('report/vehicle/:id', 'ReportController.vehicleReport').middleware('auth')
 Route.get('report/cart/:id', 'ReportController.cartReport').middleware('auth')
 Route.get('report/travel/:id', 'ReportController.travelReport').middleware('auth')
 Route.get('report/traveldate/:filter/:data/:data2/', 'ReportController.travelReportDate').middleware('auth')
 
-/*Route.get('users/', 'UserController.index').middleware('auth')
-Route.get('users/:id', 'UserController.show').middleware('auth')
-Route.get('users/:id', 'UserController.update').middleware('auth')*/
+//Reports Driver
+Route.get('report/drivers', 'ReportController.driversByStatus').middleware('auth')
+
+
 
 Route.put('users/:type/:id', 'UserController.update').middleware('auth')
 
