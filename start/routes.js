@@ -1,11 +1,6 @@
 
 'use strict'
 
-var fs = require('fs')
-var path = require('path')
-var wkhtmltopdf = require('wkhtmltopdf')
-
-
 const Route = use('Route')
 
 Route.post('/users', 'UserController.store')
@@ -30,9 +25,13 @@ Route.get('report/drivers', 'ReportController.driversByStatus').middleware('auth
 //Reports Vehicle
 Route.get('report/vehicles', 'ReportController.vehiclesByFilters').middleware('auth')
 
+//Reports Carts
+Route.get('report/carts', 'ReportController.cartsByFilters').middleware('auth')
 
+//Editar usuário
 Route.put('users/:type/:id', 'UserController.update').middleware('auth')
 
+//Rotas em geral
 Route.resource('users', 'UserController')
   .apiOnly()
   .middleware('auth')
