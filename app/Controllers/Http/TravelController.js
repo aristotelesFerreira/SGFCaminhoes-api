@@ -7,31 +7,41 @@ const Travel = use('App/Models/Travel')
 const Cart = use('App/Models/Cart')
 const Itinerary = use('App/Models/Itinerary')
 
+var moment = require('moment')
+
 
 class TravelController {
  
-  async index ({ request }) {
+  async index ({ request , response}) {
+    var format = []
     const data = request.all()
+   
     
-    const travel = Travel.query()
+     const travel = await Travel.query()
       .where(data)
       .with('carts')
       .with('vehicle')
       .with('driver')
       .with('itinerary')
       .fetch()
+
+      const departureDate = await Travel.query()
+      .where(data)
+
      
-     /* travel.then(function(result) {
-        //console.log(result.rows[0].$relations.carts.rows.length)
-     for(let i=0; i<result.rows[0].$relations.carts.rows.length; i++){
-      
-        console.log(result.rows[0].$relations.carts.rows[i].$attributes) //will log results.
-     }
-    })*/
+      for(let i=0; i<departureDate.length; i++){
+        format[i] =  moment(new Date(departureDate[i].departureDate)).format('DD/MM/YYYY')
+      }
+     
+      for(let i=0; i<departureDate.length; i++) {
+        travel.rows[i].$attributes.departureDate = format[i]
 
-    return travel
+      }
+    
+     return travel
+    
   }
-
+ 
   async store ({ request, response }) {
 
     const {carts_id, ...data }  = request.only([

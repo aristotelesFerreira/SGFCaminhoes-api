@@ -8,28 +8,30 @@ var path = require('path')
 
 
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json')))
-//console.log(path.join(__dirname, 'config.json'))
+
 
 class AuthenticationController {
     async create ({ request, auth, response }) {
         const { email, password } = request.all()
 
-        const token = await auth.attempt(email, password) 
         const user = await User
-            .query()
-            .where('email', email)
-            .firstOrFail('password', password)
+        .query()
+        .where('email', email)
+        .firstOrFail('password', password)
 
+        if(user.status == 1){
+        const token = await auth.attempt(email, password) 
+      
+
+        //verifica se o usuário já tem um token
         const exists = await Token.query().where('user_id', user.id)
 
         if(exists[0] !== undefined ) {
-            const driver = await Token.query().where('user_id', user.id).firstOrFail()
-      
-           // const data = request.all()
+            const novoToken = await Token.query().where('user_id', user.id).firstOrFail()
           
-           driver.merge({user_id: user.id, token: token.token, type:'Bearer'})
+           novoToken.merge({user_id: user.id, token: token.token, type:'Bearer'})
       
-            await driver.save()
+            await novoToken.save()
 
             return {...token, user}
 
@@ -38,6 +40,9 @@ class AuthenticationController {
 
             return {...token, user}
         }
+      }else{
+          return 'Usuário desativado'
+      }
        
     }
 
