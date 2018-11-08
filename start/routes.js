@@ -28,6 +28,9 @@ Route.get('report/vehicles', 'ReportController.vehiclesByFilters').middleware('a
 //Reports Carts
 Route.get('report/carts', 'ReportController.cartsByFilters').middleware('auth')
 
+//Reports Itineraries
+Route.get('report/itineraries', 'ReportController.itinerariesByFilters').middleware('auth')
+
 //Editar usuário
 Route.put('users/:type/:id', 'UserController.update').middleware('auth')
 
