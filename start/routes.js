@@ -27,6 +27,8 @@ Route.get('report/traveldate/:filter/:data/:data2/', 'ReportController.travelRep
 //Reports Driver
 Route.get('report/drivers', 'ReportController.driversByStatus').middleware('auth')
 
+//Reports Vehicle
+Route.get('report/vehicles', 'ReportController.vehiclesByFilters').middleware('auth')
 
 
 Route.put('users/:type/:id', 'UserController.update').middleware('auth')
