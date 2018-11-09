@@ -110,7 +110,7 @@ class ReportController {
                {
                 columns: [
                     {
-                        text: 'Relatório',
+                        text: 'Relatório de Motorista',
                         fontSize: '25',
                         alignment: 'center'
                     },
@@ -362,7 +362,7 @@ class ReportController {
            {
             columns: [
                 {
-                    text: 'Relatório',
+                    text: 'Relatório de Veículo',
                     fontSize: '25',
                     alignment: 'center'
                 },
@@ -642,7 +642,7 @@ class ReportController {
            {
             columns: [
                 {
-                    text: 'Relatório',
+                    text: 'Relatório de Carreta',
                     fontSize: '25',
                     alignment: 'center'
                 },
