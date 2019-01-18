@@ -82,7 +82,6 @@ class AuthenticationController {
                     subject: 'Nova Senha - SGFCaminhões',
                     //text: 'Segue o link abaixo para recuperar sua senha\n'+ link,
                     html: ' <p>Clique <a href="http://localhost:3000/recovery_password/' + uuid + '">aqui</a> para cadastrar uma nova senha</p>'
-                   
                 }
                 transporter.sendMail(HelperOptions, (error, info) => {
                     if(error) {
